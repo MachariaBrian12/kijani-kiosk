@@ -1,0 +1,32 @@
+# Prometheus alert rules for kk-payments (apply in cluster monitoring namespace).
+# Requires metrics: kube_pod_container_status_restarts_total, http_requests_total (if instrumented).
+groups:
+  - name: kk-payments
+    rules:
+      - alert: KkPaymentsPodRestarting
+        expr: |
+          increase(kube_pod_container_status_restarts_total{
+            namespace=~"kijani-staging|kijani-project",
+            pod=~"kk-payments-.*"
+          }[15m]) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: kk-payments
+        annotations:
+          summary: "kk-payments pods restarting frequently"
+          description: "More than 2 restarts in 15 minutes for {{ $labels.pod }} in {{ $labels.namespace }}."
+
+      - alert: KkPaymentsDown
+        expr: |
+          kube_deployment_status_replicas_available{
+            namespace=~"kijani-staging|kijani-project",
+            deployment="kk-payments"
+          } < 1
+        for: 3m
+        labels:
+          severity: critical
+          service: kk-payments
+        annotations:
+          summary: "kk-payments has no available replicas"
+          description: "Deployment kk-payments in {{ $labels.namespace }} has zero ready replicas."

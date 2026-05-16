@@ -1,6 +1,6 @@
 # KijaniKiosk
 
-Capstone repository for the KijaniKiosk DevOps programme — Track B (serverless receipt chain) with Kubernetes and Jenkins integration planned under `k8s/` and `jenkins/`.
+Capstone repository for the KijaniKiosk DevOps programme — Track B (serverless receipt chain) with Kubernetes bridge and Jenkins integration under `k8s/` and `jenkins/`.
 
 ## Serverless receipt chain
 
@@ -22,9 +22,31 @@ kk-notifier-output-{stage}       →  kk-analytics (count, total, time range)
 | `kk-notifier` | `kk-payments-processed-{stage}` | Write notification payload |
 | `kk-analytics` | `kk-notifier-output-{stage}` | Aggregate all notifications, structured log |
 
+## Kubernetes bridge
+
+`services/kk-payments` runs in-cluster and writes receipts to S3 (`POST /payments`).  
+Kustomize overlays share one Deployment; ConfigMaps set `DB_HOST` and `RECEIPTS_BUCKET` per environment.
+
+| Environment | Namespace | Receipts bucket |
+|-------------|-----------|-----------------|
+| Staging | `kijani-staging` | `kk-payments-receipts-staging` |
+| Production | `kijani-project` | `kk-payments-receipts-production` |
+
+```bash
+./scripts/build-payments-image.sh
+# minikube image load kijanikiosk/kk-payments:1.1.0
+# create secrets — see k8s/secrets/*.example
+./scripts/k8s-deploy-staging.sh
+./scripts/smoke-k8s-payment.sh kijani-staging
+```
+
+Details: [docs/k8s-serverless-bridge.md](docs/k8s-serverless-bridge.md)
+
 ## Prerequisites
 
 - Node.js 18+
+- kubectl + cluster (Minikube or other)
+- Docker (build `kk-payments` image)
 - AWS CLI configured (`aws sts get-caller-identity`)
 - [Serverless Framework](https://www.serverless.com/) v3 (installed via `npm install`)
 
@@ -49,14 +71,13 @@ npm run offline
 ## Project layout
 
 ```
-functions/kk-processor/   # Receipt validation
-functions/kk-notifier/    # Notification forward
-functions/kk-analytics/   # Aggregation + structured summary
-lib/                      # Shared S3 and receipt helpers
-k8s/                      # Kubernetes manifests (Week 9 integration)
+functions/                # Serverless Lambdas
+services/kk-payments/     # K8s payments API → S3 receipts
+k8s/base + overlays/      # Kustomize (staging / production)
+lib/                      # Shared receipt helpers (serverless)
 jenkins/                  # CI/CD pipeline
-docs/                     # Architecture, governance, reflection
-tests/                    # Unit tests and invoke fixtures
+docs/                     # Architecture, governance, bridge doc
+tests/                    # Serverless unit tests
 ```
 
 ## Receipt JSON format

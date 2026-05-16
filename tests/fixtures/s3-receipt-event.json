@@ -1,0 +1,14 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-1",
+      "eventName": "ObjectCreated:Put",
+      "s3": {
+        "bucket": { "name": "kk-payments-receipts-staging" },
+        "object": { "key": "receipts/pay-demo-001.json" }
+      }
+    }
+  ]
+}

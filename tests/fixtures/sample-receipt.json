@@ -1,0 +1,8 @@
+{
+  "paymentId": "pay-demo-001",
+  "amount": 1250.75,
+  "currency": "KES",
+  "timestamp": "2026-05-15T14:30:00.000Z",
+  "source": "kk-payments",
+  "metadata": { "terminalId": "KIOSK-01" }
+}

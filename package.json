@@ -1,0 +1,25 @@
+{
+  "name": "kijani-kiosk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KijaniKiosk capstone — serverless receipt chain (processor → notifier → analytics)",
+  "scripts": {
+    "offline": "serverless offline start",
+    "deploy:staging": "serverless deploy --stage staging",
+    "deploy:production": "serverless deploy --stage production",
+    "info:staging": "serverless info --stage staging",
+    "info:production": "serverless info --stage production",
+    "invoke:processor": "serverless invoke local -f kk-processor -p tests/fixtures/s3-receipt-event.json",
+    "test": "node --test tests/receipt.test.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.787.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.40.0",
+    "serverless-offline": "^13.9.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

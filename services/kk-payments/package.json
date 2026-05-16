@@ -1,0 +1,17 @@
+{
+  "name": "kk-payments",
+  "version": "1.1.0",
+  "description": "KijaniKiosk payments service — writes receipts to S3 for the serverless chain",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --test test/index.test.js",
+    "lint": "node --check src/index.js && node --check src/s3-receipt.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.787.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

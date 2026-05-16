@@ -1,0 +1,72 @@
+# KijaniKiosk architecture
+
+Export this diagram to PNG for submission (`docs/architecture.png`).  
+Use [Mermaid Live Editor](https://mermaid.live) or `npx @mermaid-js/mermaid-cli -i docs/architecture.md -o docs/architecture.png`.
+
+## System diagram
+
+```mermaid
+flowchart LR
+  subgraph K8s_Staging["Kubernetes — kijani-staging"]
+    KP_S[kk-payments Pod]
+    CM_S[ConfigMap\nDB_HOST staging\nRECEIPTS_BUCKET staging]
+    KP_S --> CM_S
+  end
+
+  subgraph K8s_Prod["Kubernetes — kijani-project"]
+    KP_P[kk-payments Pod]
+    CM_P[ConfigMap\nDB_HOST production\nRECEIPTS_BUCKET production]
+    KP_P --> CM_P
+  end
+
+  subgraph AWS_S3["AWS S3"]
+    B_S[(kk-payments-receipts-staging)]
+    B_P[(kk-payments-receipts-production)]
+    B_PROC[(processed bucket)]
+    B_NOT[(notifier output bucket)]
+  end
+
+  subgraph Serverless["AWS Lambda — Serverless Framework"]
+    PROC[kk-processor]
+    NOT[kk-notifier]
+    ANA[kk-analytics]
+  end
+
+  subgraph CI["Jenkins"]
+    JEN[Pipeline\nlint → test → staging → approve → prod]
+  end
+
+  User((Operator)) -->|POST /payments| KP_S
+  User -->|POST /payments| KP_P
+  KP_S -->|receipt JSON| B_S
+  KP_P -->|receipt JSON| B_P
+  B_S --> PROC
+  B_P --> PROC
+  PROC -->|processed receipt| B_PROC
+  B_PROC --> NOT
+  NOT -->|notification| B_NOT
+  B_NOT --> ANA
+  ANA -->|structured summary log| CW[CloudWatch Logs]
+  JEN -->|deploy / package| Serverless
+  JEN -->|build image| KP_S
+```
+
+## Data flows
+
+| From | To | Payload |
+|------|-----|---------|
+| Client | `kk-payments` | `POST /payments` JSON `{ amount, currency }` |
+| `kk-payments` | S3 receipts bucket | `receipts/{paymentId}.json` |
+| S3 (create) | `kk-processor` | S3 event notification |
+| `kk-processor` | processed bucket | validated receipt + `status: processed` |
+| `kk-notifier` | notifier bucket | `payment_receipt_notified` record |
+| `kk-analytics` | CloudWatch | aggregate `{ count, totalAmount, timestampRange }` |
+| Jenkins | AWS / cluster | deploy artifacts after approval gate |
+
+## Environments
+
+| Layer | Staging | Production |
+|-------|---------|------------|
+| K8s namespace | `kijani-staging` | `kijani-project` |
+| Receipts bucket | `kk-payments-receipts-staging` | `kk-payments-receipts-production` |
+| Serverless stage | `staging` | `production` |

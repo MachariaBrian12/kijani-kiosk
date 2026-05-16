@@ -47,7 +47,7 @@ functions:
     description: Validates incoming payment receipts and writes processed records
     events:
       - s3:
-          bucket: ReceiptsBucket
+          bucket: ${self:custom.bucketNames.receipts}
           event: s3:ObjectCreated:*
           existing: false
 
@@ -56,7 +56,7 @@ functions:
     description: Forwards processed receipts to the notifier output bucket
     events:
       - s3:
-          bucket: ProcessedBucket
+          bucket: ${self:custom.bucketNames.processed}
           event: s3:ObjectCreated:*
           existing: false
 
@@ -65,7 +65,7 @@ functions:
     description: Aggregates receipt events and logs a structured summary
     events:
       - s3:
-          bucket: NotifierBucket
+          bucket: ${self:custom.bucketNames.notifier}
           event: s3:ObjectCreated:*
           existing: false
 

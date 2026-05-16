@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kijani-payments-ingress
+  labels:
+    app: kk-payments
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: kijani.local
+      http:
+        paths:
+          - path: /payments(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: kk-payments
+                port:
+                  number: 3000

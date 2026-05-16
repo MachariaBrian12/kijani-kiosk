@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Serverless build artifacts
+.serverless/
+
+# Environment secrets - NEVER commit these
+.env
+.env.local
+.env.staging
+.env.production
+
+# AWS credentials
+.aws/
+
+# Mac system files
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Coverage reports
+coverage/

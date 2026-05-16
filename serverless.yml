@@ -1,0 +1,124 @@
+service: kijani-kiosk
+frameworkVersion: "3"
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${env:AWS_REGION, 'us-east-1'}
+  stage: ${opt:stage, 'staging'}
+  memorySize: 256
+  timeout: 30
+  logRetentionInDays: 14
+  environment:
+    STAGE: ${self:provider.stage}
+    RECEIPTS_BUCKET: ${self:custom.bucketNames.receipts}
+    PROCESSED_BUCKET: ${self:custom.bucketNames.processed}
+    NOTIFIER_BUCKET: ${self:custom.bucketNames.notifier}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:ListBucket
+          Resource:
+            - arn:aws:s3:::${self:custom.bucketNames.receipts}
+            - arn:aws:s3:::${self:custom.bucketNames.receipts}/*
+            - arn:aws:s3:::${self:custom.bucketNames.processed}
+            - arn:aws:s3:::${self:custom.bucketNames.processed}/*
+            - arn:aws:s3:::${self:custom.bucketNames.notifier}
+            - arn:aws:s3:::${self:custom.bucketNames.notifier}/*
+
+custom:
+  bucketNames:
+    receipts: kk-payments-receipts-${self:provider.stage}
+    processed: kk-payments-processed-${self:provider.stage}
+    notifier: kk-notifier-output-${self:provider.stage}
+  serverless-offline:
+    httpPort: 3000
+
+functions:
+  kk-processor:
+    handler: functions/kk-processor/handler.main
+    description: Validates incoming payment receipts and writes processed records
+    events:
+      - s3:
+          bucket: ReceiptsBucket
+          event: s3:ObjectCreated:*
+          existing: false
+
+  kk-notifier:
+    handler: functions/kk-notifier/handler.main
+    description: Forwards processed receipts to the notifier output bucket
+    events:
+      - s3:
+          bucket: ProcessedBucket
+          event: s3:ObjectCreated:*
+          existing: false
+
+  kk-analytics:
+    handler: functions/kk-analytics/handler.main
+    description: Aggregates receipt events and logs a structured summary
+    events:
+      - s3:
+          bucket: NotifierBucket
+          event: s3:ObjectCreated:*
+          existing: false
+
+resources:
+  Resources:
+    ReceiptsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketNames.receipts}
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    ProcessedBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketNames.processed}
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+    NotifierBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketNames.notifier}
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+
+  Outputs:
+    ReceiptsBucketName:
+      Value: !Ref ReceiptsBucket
+      Export:
+        Name: ${self:provider.stage}-kk-receipts-bucket
+    ProcessedBucketName:
+      Value: !Ref ProcessedBucket
+    NotifierBucketName:
+      Value: !Ref NotifierBucket

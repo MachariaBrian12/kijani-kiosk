@@ -1,0 +1,19 @@
+
+> kijani-kiosk@1.0.0 test
+> node --test tests/receipt.test.js
+
+▶ parseReceipt
+  ✔ parses a valid receipt (0.948ms)
+  ✔ rejects missing amount (0.186917ms)
+✔ parseReceipt (1.817625ms)
+▶ aggregateReceipts
+  ✔ aggregates count, total, and timestamp range (0.139ms)
+✔ aggregateReceipts (0.238791ms)
+ℹ tests 3
+ℹ suites 2
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 75.64925

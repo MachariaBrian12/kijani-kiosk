@@ -1,0 +1,62 @@
+==============================================
+ KijaniKiosk offline pipeline demo (partial — run locally for full log)
+ SKIP_AWS_DEPLOY=true
+ 2026-05-18T05:06:47+03:00
+==============================================
+aaf90f3 docs: add submission package and rubric self-assessment
+
+[STAGE] Lint & Test — serverless (npm test)
+
+> kijani-kiosk@1.0.0 test
+> node --test tests/receipt.test.js
+
+▶ parseReceipt
+  ✔ parses a valid receipt (1.028625ms)
+  ✔ rejects missing amount (0.162708ms)
+✔ parseReceipt (1.671792ms)
+▶ aggregateReceipts
+  ✔ aggregates count, total, and timestamp range (0.092375ms)
+✔ aggregateReceipts (0.140416ms)
+ℹ tests 3
+ℹ suites 2
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 62.692667
+
+[STAGE] Lint & Test — kk-payments
+
+> kk-payments@1.1.0 test
+> node --test test/index.test.js
+
+▶ kk-payments receipt shape
+  ✔ builds a valid receipt object (0.903708ms)
+✔ kk-payments receipt shape (1.405875ms)
+ℹ tests 1
+ℹ suites 1
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 62.725791
+
+[STAGE] Smoke + fault
+{"smoke":"ok","paymentId":"pay-demo-001"}
+FAULT CAUGHT: Invalid receipt: paymentId and numeric amount are required
+
+==============================================
+ [STAGE] Production approval (input gate)
+==============================================
+Production approved. Reason: Capstone offline demo: all tests and packages passed. Production package approved without AWS.
+
+[STAGE] Offline production package (no AWS)
+Production package ready. Deploy when AWS account is active.
+
+==============================================
+ PIPELINE SUCCEEDED (offline demo)
+==============================================
+
+NOTE: Run ./scripts/run-pipeline-offline-demo.sh on your Mac for full log including serverless package + kustomize.

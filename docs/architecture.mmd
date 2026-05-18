@@ -1,0 +1,43 @@
+flowchart LR
+  subgraph K8s_Staging["Kubernetes — kijani-staging"]
+    KP_S[kk-payments Pod]
+    CM_S["ConfigMap DB_HOST staging RECEIPTS_BUCKET staging"]
+    KP_S --> CM_S
+  end
+
+  subgraph K8s_Prod["Kubernetes — kijani-project"]
+    KP_P[kk-payments Pod]
+    CM_P["ConfigMap DB_HOST production RECEIPTS_BUCKET production"]
+    KP_P --> CM_P
+  end
+
+  subgraph AWS_S3["AWS S3"]
+    B_S[(kk-payments-receipts-staging)]
+    B_P[(kk-payments-receipts-production)]
+    B_PROC[(processed bucket)]
+    B_NOT[(notifier output bucket)]
+  end
+
+  subgraph Serverless["AWS Lambda — Serverless Framework"]
+    PROC[kk-processor]
+    NOT[kk-notifier]
+    ANA[kk-analytics]
+  end
+
+  subgraph CI["Jenkins"]
+    JEN["Pipeline lint test staging approve prod"]
+  end
+
+  User((Operator)) -->|POST /payments| KP_S
+  User -->|POST /payments| KP_P
+  KP_S -->|receipt JSON| B_S
+  KP_P -->|receipt JSON| B_P
+  B_S --> PROC
+  B_P --> PROC
+  PROC -->|processed receipt| B_PROC
+  B_PROC --> NOT
+  NOT -->|notification| B_NOT
+  B_NOT --> ANA
+  ANA -->|structured summary log| CW[CloudWatch Logs]
+  JEN -->|deploy / package| Serverless
+  JEN -->|build image| KP_S

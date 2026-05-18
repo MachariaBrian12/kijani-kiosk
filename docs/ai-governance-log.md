@@ -14,7 +14,7 @@ Week 10 eight-field format. All AI-assisted work on this capstone is recorded he
 | **What the AI produced** | Full `serverless.yml` with three S3 buckets, IAM statements, and handlers for processor / notifier / analytics |
 | **What it got wrong** | Initially scaffolded `functions/kk-payments/` as a Lambda; that name belongs to the Kubernetes service, not a fourth serverless function |
 | **Reviewer change** | Removed `functions/kk-payments/`; documented K8s producer in README; kept three Lambdas only |
-| **Checklist item** | Human review before merge — verify resource names match Track B spec and no secrets in repo |
+| **Checklist item** | Control 3 (no secrets in code) and Control 6 (AI-assisted code reviewed) — verified .gitignore blocks .env*; governance log entry confirms human review before merge |
 | **Outcome** | Merged via PR #1; `npm test` passes; `serverless print` validated locally |
 
 ---

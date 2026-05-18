@@ -54,7 +54,7 @@ _Screenshot: Jenkins input step_
 
 ## Slide 6 — AI tooling & governance
 
-- Cursor Agent for serverless + K8s bridge  
+- AI coding assistant for serverless + K8s bridge (documented in governance log)  
 - Log: `docs/ai-governance-log.md` (3 entries)  
 - Example mistake: Lambda folder named `kk-payments` — caught in review  
 - Checklist: `docs/governance-checklist.md`

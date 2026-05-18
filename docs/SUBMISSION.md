@@ -19,7 +19,7 @@
 | 1 | Project scope (PDF) | [docs/project-scope.pdf](https://github.com/MachariaBrian12/kijani-kiosk/blob/main/docs/project-scope.pdf) |
 | 1b | Architecture diagram (PNG) | [docs/architecture.png](https://github.com/MachariaBrian12/kijani-kiosk/blob/main/docs/architecture.png) |
 | 2 | Working repository | https://github.com/MachariaBrian12/kijani-kiosk |
-| 3 | Pipeline demo | _Add Loom URL or screenshots in LMS_ → see [demo-pipeline-screenshots.md](demo-pipeline-screenshots.md) |
+| 3 | Pipeline demo | [demo-evidence/DEMO-EVIDENCE.html](demo-evidence/DEMO-EVIDENCE.html) (screenshot/Loom) · [guide](demo-pipeline-screenshots.md) |
 | 4 | Peer feedback log | [docs/peer-feedback-log.md](https://github.com/MachariaBrian12/kijani-kiosk/blob/main/docs/peer-feedback-log.md) · [Issues](https://github.com/MachariaBrian12/kijani-kiosk/issues) |
 | 5 | Slide deck (PDF) | [docs/slides.pdf](https://github.com/MachariaBrian12/kijani-kiosk/blob/main/docs/slides.pdf) |
 | 6 | Reflection (PDF) | [docs/reflection.pdf](https://github.com/MachariaBrian12/kijani-kiosk/blob/main/docs/reflection.pdf) |
@@ -49,5 +49,6 @@ Architecture PNG: https://github.com/MachariaBrian12/kijani-kiosk/blob/main/docs
 Slides PDF: https://github.com/MachariaBrian12/kijani-kiosk/blob/main/docs/slides.pdf
 Reflection PDF: https://github.com/MachariaBrian12/kijani-kiosk/blob/main/docs/reflection.pdf
 Peer feedback: https://github.com/MachariaBrian12/kijani-kiosk/blob/main/docs/peer-feedback-log.md
-Pipeline demo: [PASTE LOOM URL]
+Pipeline demo: [PASTE LOOM URL or use demo-evidence/DEMO-EVIDENCE.html screenshots]
+Demo evidence page: https://github.com/MachariaBrian12/kijani-kiosk/blob/main/docs/demo-evidence/DEMO-EVIDENCE.html
 ```

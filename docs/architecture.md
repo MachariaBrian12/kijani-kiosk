@@ -1,7 +1,14 @@
 # KijaniKiosk architecture
 
-Export this diagram to PNG for submission (`docs/architecture.png`).  
-Use [Mermaid Live Editor](https://mermaid.live) or `npx @mermaid-js/mermaid-cli -i docs/architecture.md -o docs/architecture.png`.
+Export this diagram to PNG for submission (`docs/architecture.png`).
+
+**Recommended:** open [Mermaid Live](https://mermaid.live), paste the contents of [`architecture.mmd`](./architecture.mmd), then **Actions → Export → PNG**.
+
+**CLI (slow first run — downloads Chromium):**
+
+```bash
+./scripts/export-architecture-png.sh
+```
 
 ## System diagram
 

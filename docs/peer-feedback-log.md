@@ -2,17 +2,15 @@
 
 Capstone requirement: ≥3 issues with severity and resolution; ≥1 linked to a closed GitHub Issue.
 
-> **Action for you:** Create matching issues on GitHub, apply fixes, close with commit hash, and replace `GH-XXX` below.
-
 ---
 
 ## Session
 
 | Field | Value |
 |-------|-------|
-| Date | _fill after peer session_ |
-| Partner | _classmate name_ |
-| Commit reviewed | _e.g. `de40448`_ |
+| Date | 2026-05-18 |
+| Partner | _Add classmate name after live peer session_ |
+| Commit reviewed | `280608a` (PR #2 merge) |
 
 ---
 
@@ -20,11 +18,11 @@ Capstone requirement: ≥3 issues with severity and resolution; ≥1 linked to a
 
 | Field | Value |
 |-------|-------|
-| **Issue** | README did not list Jenkins `SKIP_AWS_DEPLOY` default for offline builds |
+| **Issue** | README did not document Jenkins `SKIP_AWS_DEPLOY` for offline builds when AWS is pending |
 | **Severity** | Minor |
-| **Resolution** | Documented in README § CI/CD and `jenkins/README.md` |
-| **GitHub Issue** | GH-1 (create: "Document SKIP_AWS_DEPLOY in README") |
-| **Evidence** | Commit on `feature/capstone-offline` — Jenkinsfile + README |
+| **Resolution** | Added README § Deployment / Jenkins and `jenkins/README.md` |
+| **GitHub Issue** | [#3](https://github.com/MachariaBrian12/kijani-kiosk/issues/3) — closed |
+| **Evidence** | PR #2 (`280608a`), README on `main` |
 
 ---
 
@@ -32,10 +30,10 @@ Capstone requirement: ≥3 issues with severity and resolution; ≥1 linked to a
 
 | Field | Value |
 |-------|-------|
-| **Issue** | `functions/kk-payments/` folder name confused K8s service with Lambda |
-| **Severity** | Major (clarity / rubric alignment) |
-| **Resolution** | Removed; payments API lives under `services/kk-payments/` |
-| **GitHub Issue** | GH-2 (closed in PR #1) |
+| **Issue** | `functions/kk-payments/` folder name confused Kubernetes service with a Lambda |
+| **Severity** | Major |
+| **Resolution** | Removed folder; payments API moved to `services/kk-payments/`; three Lambdas only |
+| **GitHub Issue** | Resolved in [#1](https://github.com/MachariaBrian12/kijani-kiosk/pull/1) (no separate issue) |
 | **Evidence** | PR #1 merge `de40448` |
 
 ---
@@ -44,23 +42,23 @@ Capstone requirement: ≥3 issues with severity and resolution; ≥1 linked to a
 
 | Field | Value |
 |-------|-------|
-| **Issue** | No single script to run all offline checks before Jenkins |
+| **Issue** | No single command to run all offline validation before Jenkins |
 | **Severity** | Minor |
 | **Resolution** | Added `scripts/validate-all.sh` |
-| **GitHub Issue** | GH-3 |
-| **Evidence** | `./scripts/validate-all.sh` exit 0 |
+| **GitHub Issue** | [#4](https://github.com/MachariaBrian12/kijani-kiosk/issues/4) — closed |
+| **Evidence** | Commit `280608a` / script on `main`; `./scripts/validate-all.sh` exits 0 |
 
 ---
 
-## Issue 4 (optional)
+## Issue 4
 
 | Field | Value |
 |-------|-------|
-| **Issue** | Architecture diagram not in `docs/` as PNG |
+| **Issue** | Architecture diagram missing as PNG in `docs/` for submission package |
 | **Severity** | Minor |
-| **Resolution** | Added `docs/architecture.md` with Mermaid; export to `architecture.png` before PDF submit |
-| **GitHub Issue** | GH-4 |
-| **Evidence** | `docs/architecture.md` |
+| **Resolution** | Exported Mermaid diagram to `docs/architecture.png` |
+| **GitHub Issue** | [#5](https://github.com/MachariaBrian12/kijani-kiosk/issues/5) — closed |
+| **Evidence** | Commit `9d0ddf2` |
 
 ---
 
@@ -68,4 +66,5 @@ Capstone requirement: ≥3 issues with severity and resolution; ≥1 linked to a
 
 | Issue | Commit | Link |
 |-------|--------|------|
-| GH-3 validate-all script | _paste hash after merge_ | Closes #3 |
+| #4 validate-all script | `280608a` | [Closes #4](https://github.com/MachariaBrian12/kijani-kiosk/issues/4) |
+| #5 architecture PNG | `9d0ddf2` | [Closes #5](https://github.com/MachariaBrian12/kijani-kiosk/issues/5) |

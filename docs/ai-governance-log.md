@@ -29,7 +29,7 @@ Week 10 eight-field format. All AI-assisted work on this capstone is recorded he
 | **What the AI produced** | Kustomize base + staging/production overlays, Node service with `@aws-sdk/client-s3`, deploy scripts |
 | **What it got wrong** | Assumed AWS credentials would exist for deploy; did not document `SKIP_AWS_DEPLOY` until the AWS account was still pending activation |
 | **Reviewer change** | Added `scripts/validate-all.sh`, Jenkins `SKIP_AWS_DEPLOY=true` default, and `docs/k8s-serverless-bridge.md` |
-| **Checklist item** | Test before merge — run `kubectl kustomize` and `npm test` in `services/kk-payments` |
+| **Checklist item** | Control 1 (least-privilege IAM) and Control 3 (no secrets in code) — verified Kustomize overlays use K8s Secret references, not hardcoded values; npm test passes |
 | **Outcome** | Feature branch ready; offline validation passes without AWS |
 
 ---
@@ -44,5 +44,5 @@ Week 10 eight-field format. All AI-assisted work on this capstone is recorded he
 | **What the AI produced** | Declarative pipeline with parallel test stages and `input` step for approval reason |
 | **What it got wrong** | First draft used `text()` parameter type, which is not available on all Jenkins installations |
 | **Reviewer change** | Switched to `string(name: 'APPROVAL_REASON')` and map-safe reason extraction |
-| **Checklist item** | Document AI use — this log entry; pipeline behaviour described in `jenkins/README.md` |
+| **Checklist item** | Control 4 (human approval for production) and Control 6 (AI-assisted code reviewed) — Jenkins input step requires APPROVAL_REASON; this log entry is the documentation |
 | **Outcome** | Pipeline runnable on Jenkins without AWS when `SKIP_AWS_DEPLOY=true` |

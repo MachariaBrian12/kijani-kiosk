@@ -160,16 +160,3 @@ See [jenkins/README.md](jenkins/README.md).
 **Production gaps:** [docs/governance-checklist.md](docs/governance-checklist.md)
 
 ---
-
-## Capstone deliverables checklist
-
-| # | Deliverable | Location |
-|---|-------------|----------|
-| 1 | Scope + diagram | `docs/project-scope.md`, export `docs/architecture.png` |
-| 2 | Working repo | This repository |
-| 3 | Pipeline demo | Jenkins + Loom/screenshots |
-| 4 | Peer feedback | `docs/peer-feedback-log.md` + GitHub Issues |
-| 5 | Slides | `docs/slides.md` → PDF |
-| 6 | Reflection | `docs/reflection.md` → PDF |
-
-**Release tag (before submit):** `git tag -a v1.0.0 -m "Capstone release" && git push origin v1.0.0`
